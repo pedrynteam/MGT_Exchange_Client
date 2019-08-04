@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SAHB.GraphQL.Client.Subscription" Version="2.0.0-beta0005" />
+  </ItemGroup>
+
+</Project>
