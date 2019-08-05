@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MGT_Exchange_Client.GraphQLMin.Query
+namespace MGT_Exchange_Client.GraphQL.Query
 {
 
     // 1. Create Model: Input type is used for Mutation, it should be included if needed

@@ -8,67 +8,46 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MGT_Exchange_Client.GraphQLMin.Query
+namespace MGT_Exchange_Client.GraphQL.Mutation
 {
     // 1. Create Model: Input type is used for Mutation, it should be included if needed
-    public class MutationCreateChatTxn_Input
-    {        
-        public chat chat { get; set; }
+    public class MutationAddCommentToChatTxn_Input
+    {
+        public userApp userApp { get; set; }
+        public comment comment { get; set; }        
         public string url { get; set; }
         public string token { get; set; }
     }
 
-    public class MutationCreateChatTxn_Output
+    public class MutationAddCommentToChatTxn_Output
     {
         public resultConfirmation ResultConfirmation { get; set; }
-        public chat chat { get; set; }
+        public comment comment { get; set; }
     }
 
-    public class MutationCreateChatTxn
+    public class MutationAddCommentToChatTxn
     {
 
-        public MutationCreateChatTxn()
+        public MutationAddCommentToChatTxn()
         {
         }
 
-        public async Task<MutationCreateChatTxn_Output> Execute(MutationCreateChatTxn_Input input)//, IServiceProvider serviceProvider, MVCDbContext contextFatherMVC = null, ApplicationDbContext contextFatherApp = null, bool autoCommit = true)
+        public async Task<MutationAddCommentToChatTxn_Output> Execute(MutationAddCommentToChatTxn_Input input)//, IServiceProvider serviceProvider, MVCDbContext contextFatherMVC = null, ApplicationDbContext contextFatherApp = null, bool autoCommit = true)
         {
-            MutationCreateChatTxn_Output output = new MutationCreateChatTxn_Output();
-
-            String participantsIn = "";
-            foreach (var userin in input.chat.participants)
-            {
-                string admin = (userin.isAdmin == true) ? "true" : "false";
-
-                participantsIn += @"
-                {
-                    participantId: 0
-                    chatId: 0
-                    isAdmin: " + admin + @"
-                    userAppId: " + SAHBResource.SetArgumentRaw(userin.userAppId) + @"
-                }
-                ";
-            }
+            MutationAddCommentToChatTxn_Output output = new MutationAddCommentToChatTxn_Output();
 
             string queryRaw = @"
-
-mutation
-{
-  createChatTxn(input:
-  {
-    chat:
-    {
-      chatId:0
-      name:" + SAHBResource.SetArgumentRaw(input.chat.name) + @"
-      companyId: " + SAHBResource.SetArgumentRaw(input.chat.companyId) + @"
-      participants:
-      [
-      "+ participantsIn + @"    
-      ]
+mutation {
+  addCommentToChatTxn(
+    input: {
+      comment: {
+        commentId: 0
+        chatId: " + input.comment.chatId + @"
+        message: " + SAHBResource.SetArgumentRaw(input.comment.message) + @"
+        userAppId: " + SAHBResource.SetArgumentRaw(input.comment.userAppId) + @"
+      }
     }
-    }
-  )
-  {
+  ) {
     resultConfirmation {
       resultCode
       resultPassed
@@ -79,16 +58,15 @@ mutation
         value
       }
     }
-    chat
-    {
-      chatId
+    comment {
+     commentId
+     message
     }
   }
 }
 
-
 ";
-
+            
             string queryToExecute = " {\"query\":\" " + queryRaw + " \"} ";
 
             IGraphQLHttpExecutor executor = new GraphQLHttpExecutor();
@@ -106,11 +84,14 @@ mutation
             if (!errors)
             {
                 // If no high level errors return the result as it is from server. It may contain errors
-                output = stuff.data.createChatTxn.ToObject<MutationCreateChatTxn_Output>();
+                output = stuff.data.addCommentToChatTxn.ToObject<MutationAddCommentToChatTxn_Output>();
+                //List<chat> chats = stuff.data.chatsByUser.ToObject<List<chat>>();
+                //output.comment = stuff.data.addCommentToChatTxn.ToObject<comment>();
+                //output.ResultConfirmation = new resultConfirmation { resultPassed = true };
             }
             else
             {
-                output.chat = null;
+                output.comment = null;
                 output.ResultConfirmation = new resultConfirmation { resultPassed = false, resultMessage = "ErrorMessage", resultDetail = "resultDetail" };
             }
 

@@ -1,5 +1,6 @@
-﻿using MGT_Exchange_Client.GraphQL.MVC;
-using MGT_Exchange_Client.GraphQLMin.Query;
+﻿using MGT_Exchange_Client.GraphQL.Interface;
+using MGT_Exchange_Client.GraphQL.MVC;
+using MGT_Exchange_Client.GraphQL.Query;
 using NUnit.Framework;
 using SAHB.GraphQLClient;
 using System;
@@ -11,75 +12,54 @@ namespace NUnitTest_Exchange
 {
     class UnitTestQueryMin
     {
-
         // https://wrightfully.com/assert-framework-comparison
-        // readonly string url = "http://10.18.24.67:8082/";
-        // readonly string token = "qwe";
-        // readonly IGraphQLHttpClient client = GraphQLHttpClient.Default();
+        
+        readonly IMGTExchangeClient clientMGT = new MGTExchangeClient();
+        readonly string _url = "http://10.18.24.67:8082/";
+        readonly string _token = "token";
 
         [SetUp]
         public void Setup()
         {
         }
 
-        [Test]
-        public async Task TestQueryChatsByUserMain()
-        {
-            QueryChatsByUserMain_Input input = new QueryChatsByUserMain_Input
-            {
-                takeChats = 5,
-                unseenForUserIdTake = 1,
-                newestWhenNoUnseenTake = 1,
-                UserApp = new userApp { userAppId = "10d3ed1e-ae7d-4d0c-80e0-aa360d76025b" },
-                url = "http://10.18.24.67:8082/",
-                token = "token"
-            };
-
-            QueryChatsByUserMain_Output output = await new QueryChatsByUserMain().Execute(input: input);
-
-            Assert.That(output, Is.Not.Null);
-            Assert.That(output.ResultConfirmation.resultPassed, Is.True);
-            Assert.That(output.Chats.Count, Is.GreaterThan(0));
-
-        }
 
         [Test]
-        public async Task TestQueryQueryAllUsersByCompany()
+        public async Task TestQueryAllUsersByCompany()
         {
             QueryAllUsersByCompany_Input input = new QueryAllUsersByCompany_Input
             {                
                 company = new company { companyId = "04c6b67c-6f4d-455f-a472-d6206dd769df" },
-                url = "http://10.18.24.67:8082/",
-                token = "token"
+                url = _url,
+                token = _token
             };
-
-            QueryAllUsersByCompany_Output output = await new QueryAllUsersByCompany().Execute(input: input);
-
+                        
+            QueryAllUsersByCompany_Output output = await clientMGT.QueryAllUsersByCompany(input: input);
+            
             Assert.That(output, Is.Not.Null);
             Assert.That(output.ResultConfirmation.resultPassed, Is.True);
             Assert.That(output.company.users.Count, Is.GreaterThan(0));
-
         }
 
         [Test]
-        public async Task TestQueryRetrieveNewestChatsAndCommentsByUser()
+        public async Task TestQueryRetrieveRecentChats()
         {
             // This is to be used as master List, to show recent chats, and recent message of each chat (seen or unseen). 
             // After that the user can click in an specific chat to check more information
             QueryRetrieveMasterInformationByUser_Input input = new QueryRetrieveMasterInformationByUser_Input
             {               
                 UserApp = new userApp { userAppId = "10d3ed1e-ae7d-4d0c-80e0-aa360d76025b" },
-                chatsRecentTake = 1,
+                chatsRecentTake = 5,
                 commentsSeenTake = 0,
                 commentsUnseenTake = 0,
                 commentsNewestTake = 1,
                 commentsBeforeUnseenTake = 0,
                 findSpecificChatId = 0, // 0 means no, any number means ChatId
-                url = "http://10.18.24.67:8082/",
-                token = "token"
+                url = _url,
+                token = _token
             };
-            // Bind all the variables needed.
-            QueryRetrieveMasterInformationByUser_Output output = await new QueryRetrieveMasterInformationByUser().Execute(input: input);
+            
+            QueryRetrieveMasterInformationByUser_Output output = await clientMGT.QueryRetrieveRecentChats(input: input);
 
             Assert.That(output, Is.Not.Null);
             Assert.That(output.ResultConfirmation.resultPassed, Is.True);
@@ -87,8 +67,8 @@ namespace NUnitTest_Exchange
 
         }
 
-        [Test]
-        public async Task TestQueryRetrieveUnseenCommentsOrNewestByUser()
+        [Test]        
+        public async Task TestQueryRetrieveChatComments()
         {
             // This is to be used when a user clicks any Chat from the master chats list
             // The app must show unseen comments if any, if none, wold show newest comments
@@ -105,11 +85,11 @@ namespace NUnitTest_Exchange
                 commentsUnseenTake = 10,
                 commentsNewestTake = 10,                
                 findSpecificChatId = 2, // 0 means no, any number means ChatId
-                url = "http://10.18.24.67:8082/",
-                token = "token"
+                url = _url,
+                token = _token
             };
-            // Bind all the variables needed.
-            QueryRetrieveMasterInformationByUser_Output output = await new QueryRetrieveMasterInformationByUser().Execute(input: input);
+
+            QueryRetrieveMasterInformationByUser_Output output = await clientMGT.QueryRetrieveRecentChats(input: input);
 
             Assert.That(output, Is.Not.Null);
             Assert.That(output.ResultConfirmation.resultPassed, Is.True);
