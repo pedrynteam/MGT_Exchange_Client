@@ -1,11 +1,11 @@
 ﻿using Newtonsoft.Json;
+using SAHB.GraphQLClient.FieldBuilder.Attributes;
 using System;
 
 namespace MGT_Exchange_Client.GraphQL.MVC
 {
     public class notification
-    {
-        //[Key]
+    {        
         public int notificationId { get; set; }
 
         public string type { get; set; } // NewMessage, NewChat * Enum
@@ -15,9 +15,9 @@ namespace MGT_Exchange_Client.GraphQL.MVC
         public string message { get; set; } // Hello!, New Photo
         
         // 1 to 1 - Steven Sandersons
-        public string toUserAppId { get; set; }
-        // [ForeignKey("ToUserAppId")]
+        public string toUserAppId { get; set; }        
         [JsonIgnore] // To avoid circular calls. Customer -> Order -> Customer -> Order
+        [GraphQLFieldIgnore]
         public virtual userApp toUserApp { get; set; }
 
         // To go to the correct screen or detailed page

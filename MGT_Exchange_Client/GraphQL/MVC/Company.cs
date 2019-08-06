@@ -7,11 +7,8 @@ namespace MGT_Exchange_Client.GraphQL.MVC
 
     public class company
     {
-        //[Key]
-        //[DatabaseGenerated(DatabaseGeneratedOption.None)]
+        
         public string companyId { get; set; }
-
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }        
         public string loginTokenId { get; set; } // Use it to Identify 
         public string name { get; set; }

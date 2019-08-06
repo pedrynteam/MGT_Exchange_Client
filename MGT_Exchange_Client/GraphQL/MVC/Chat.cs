@@ -7,8 +7,7 @@ namespace MGT_Exchange_Client.GraphQL.MVC
 {
     // One to One or One to Many Chat. Just chat.
     public class chat
-    {
-        //[Key]
+    {        
         public int chatId { get; set; }
 
         public string type { get; set; }
@@ -26,7 +25,6 @@ namespace MGT_Exchange_Client.GraphQL.MVC
 
         // 1 to 1 - Steven Sandersons
         public string companyId { get; set; }
-        // [ForeignKey("CompanyId")]
         [JsonIgnore] // To avoid circular calls. Customer -> Order -> Customer -> Order
         [GraphQLFieldIgnore]
         public virtual company company { get; set; }
@@ -38,7 +36,6 @@ namespace MGT_Exchange_Client.GraphQL.MVC
         // 1 to Many - Steven Sandersons
         [GraphQLFieldIgnore]
         public virtual List<comment> comments { get; set; }
-
 
     }
 
