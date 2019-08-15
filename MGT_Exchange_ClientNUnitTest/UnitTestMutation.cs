@@ -11,18 +11,22 @@ using System.Threading.Tasks;
 
 namespace NUnitTest_Exchange
 {
-    class UnitTestMutationMin
-    {        
+    class UnitExecuteMutationMin
+    {
+        IMGTClient clientMGT = new MGTClient();
+        string url = "http://10.18.24.67:8082/";
+        string token = "token";
+
         [SetUp]
         public void Setup()
         {
         }
 
         [Test]
-        public async Task TestMutationCreateCompanyAndXUsersTxn()
+        public async Task ExecuteMutationCreateCompanyAndXUsersTxn()
         {
             MutationCreateCompanyAndXUsersTxn_Output output =
-                await MGTMutationTest.TestMutationCreateCompanyAndXUsersTxn();
+                await MGTMutationExecute.ExecuteMutationCreateCompanyAndXUsersTxn(clientMGT: clientMGT, _url: url, _token: token);
 
             Assert.That(output, Is.Not.Null);
             Assert.That(output.ResultConfirmation.resultPassed, Is.True);
@@ -31,11 +35,11 @@ namespace NUnitTest_Exchange
         }
 
         [Test]
-        public async Task TestMutationCreateChatTxn()
+        public async Task ExecuteMutationCreateChatTxn()
         {
          
             MutationCreateChatTxn_Output output = 
-                await MGTMutationTest.TestMutationCreateChatTxn();
+                await MGTMutationExecute.ExecuteMutationCreateChatTxn(clientMGT: clientMGT, _url: url, _token: token);
 
             Assert.That(output, Is.Not.Null);
             Assert.That(output.ResultConfirmation.resultPassed, Is.True);
@@ -44,10 +48,10 @@ namespace NUnitTest_Exchange
         }
 
         [Test]
-        public async Task TestMutationAddCommentToChatTxn()
+        public async Task ExecuteMutationAddCommentToChatTxn()
         {
             MutationAddCommentToChatTxn_Output output =
-                await MGTMutationTest.TestMutationAddCommentToChatTxn();
+                await MGTMutationExecute.ExecuteMutationAddCommentToChatTxn(clientMGT: clientMGT, _url: url, _token: token);
 
             Assert.That(output, Is.Not.Null);
             Assert.That(output.ResultConfirmation.resultPassed, Is.True);

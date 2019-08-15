@@ -8,13 +8,10 @@ using System.Threading.Tasks;
 
 namespace MGT_Exchange_Client.GraphQL.Testing
 {
-    public static class MGTMutationTest
+    public static class MGTMutationExecute
     {
-        public static async Task<MutationCreateCompanyAndXUsersTxn_Output> TestMutationCreateCompanyAndXUsersTxn()
+        public static async Task<MutationCreateCompanyAndXUsersTxn_Output> ExecuteMutationCreateCompanyAndXUsersTxn(IMGTClient clientMGT, string _url, string _token)
         {
-            IMGTExchangeClient clientMGT = new MGTExchangeClient();
-            string _url = "http://10.18.24.67:8082/";
-            string _token = "token";
 
             MutationCreateCompanyAndXUsersTxn_Input input = new MutationCreateCompanyAndXUsersTxn_Input
             {
@@ -36,12 +33,8 @@ namespace MGT_Exchange_Client.GraphQL.Testing
             return output;
         }
         
-        public static async Task<MutationCreateChatTxn_Output> TestMutationCreateChatTxn()
+        public static async Task<MutationCreateChatTxn_Output> ExecuteMutationCreateChatTxn(IMGTClient clientMGT, string _url, string _token)
         {
-            IMGTExchangeClient clientMGT = new MGTExchangeClient();
-            string _url = "http://10.18.24.67:8082/";
-            string _token = "token";
-
             // Pending, when the user is not from this company return: Inner Exception 
 
             MutationCreateChatTxn_Input input = new MutationCreateChatTxn_Input
@@ -86,11 +79,8 @@ namespace MGT_Exchange_Client.GraphQL.Testing
             return output;
         }
         
-        public static async Task<MutationAddCommentToChatTxn_Output> TestMutationAddCommentToChatTxn()
+        public static async Task<MutationAddCommentToChatTxn_Output> ExecuteMutationAddCommentToChatTxn(IMGTClient clientMGT, string _url, string _token)
         {
-            IMGTExchangeClient clientMGT = new MGTExchangeClient();
-            string _url = "http://10.18.24.67:8082/";
-            string _token = "token";
 
             MutationAddCommentToChatTxn_Input input = new MutationAddCommentToChatTxn_Input
             {

@@ -11,7 +11,7 @@ namespace MGT_Exchange_Client.GraphQL.Interface
     /// <summary>
     /// It's preferable to use an interface because all the events are listed here.
     /// </summary>
-    public interface IMGTExchangeClient
+    public interface IMGTClient
     {
         // <Query>
 
@@ -26,7 +26,6 @@ namespace MGT_Exchange_Client.GraphQL.Interface
         ///  };        
         /// </param>
         /// <returns>A company object with all the users</returns>
-
         Task<QueryAllUsersByCompany_Output> QueryAllUsersByCompany(QueryAllUsersByCompany_Input input);
         
         /// <summary>
@@ -46,7 +45,22 @@ namespace MGT_Exchange_Client.GraphQL.Interface
         ///  };        
         /// </param>
         /// <returns>A object where commentsNewest is the list to use</returns>
-        Task<QueryRetrieveMasterInformationByUser_Output> QueryRetrieveRecentChats(QueryRetrieveMasterInformationByUser_Input input);
+        //Task<QueryRetrieveMasterInformationByUser_Output> QueryRetrieveRecentChatsByComments(QueryRetrieveMasterInformationByUser_Input input);
+
+        /// <summary>
+        /// Get a master List, to show recent chats, and recent message of each chat (seen or unseen).
+        /// </summary>
+        /// <param name="input"> 
+        ///  QueryChatsByUserMain_Input input = new QueryChatsByUserMain_Input
+        ///  UserApp = new userApp { userAppId = "10d3ed1e-ae7d-4d0c-80e0-aa360d76025b" },
+        ///  takeChats = 5,
+        ///  newestInChatTake = 1, // In case we want to see only the newest
+        ///  url = "GraphQL URL",
+        ///  token = "UserAppAuthToken"
+        ///  };        
+        /// </param>
+        /// <returns>A object where commentsNewest is the list to use</returns>
+        Task<QueryChatsByUserMain_Output> QueryChatsByUserMain(QueryChatsByUserMain_Input input);
 
         /// <summary>
         /// Get a chat detail (findSpecificChatId), This is to be used when a user clicks any Chat from the master chats list
@@ -145,50 +159,4 @@ namespace MGT_Exchange_Client.GraphQL.Interface
         // </Subscription>
     }
 
-    public class MGTExchangeClient : IMGTExchangeClient
-    {
-        // <Query> 
-        public async Task<QueryAllUsersByCompany_Output> QueryAllUsersByCompany(QueryAllUsersByCompany_Input input)
-        {
-            QueryAllUsersByCompany_Output output = await new QueryAllUsersByCompany().Execute(input: input);
-            return output;
-        }
-
-        public async Task<QueryRetrieveMasterInformationByUser_Output> QueryRetrieveRecentChats(QueryRetrieveMasterInformationByUser_Input input)
-        {
-            QueryRetrieveMasterInformationByUser_Output output = await new QueryRetrieveMasterInformationByUser().Execute(input: input);
-            return output;
-        }
-
-        public async Task<QueryRetrieveMasterInformationByUser_Output> QueryRetrieveChatComments(QueryRetrieveMasterInformationByUser_Input input)
-        {
-            QueryRetrieveMasterInformationByUser_Output output = await new QueryRetrieveMasterInformationByUser().Execute(input: input);
-            return output;            
-        }
-
-        // </Query>
-        // <Mutation>
-        public async Task<MutationCreateCompanyAndXUsersTxn_Output> MutationCreateCompanyAndXUsersTxn(MutationCreateCompanyAndXUsersTxn_Input input)
-        {
-            MutationCreateCompanyAndXUsersTxn_Output output = await new MutationCreateCompanyAndXUsersTxn().Execute(input: input);
-            return output;
-        }
-        public async Task<MutationCreateChatTxn_Output> MutationCreateChatTxn(MutationCreateChatTxn_Input input)
-        {
-            MutationCreateChatTxn_Output output = await new MutationCreateChatTxn().Execute(input: input);
-            return output;
-        }
-
-        public async Task<MutationAddCommentToChatTxn_Output> MutationAddCommentToChatTxn(MutationAddCommentToChatTxn_Input input)
-        {
-            MutationAddCommentToChatTxn_Output output = await new MutationAddCommentToChatTxn().Execute(input: input);
-            return output;            
-        }
-
-
-
-
-        // </Mutation>
-
-    }
 }

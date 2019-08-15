@@ -16,8 +16,7 @@ namespace MGT_Exchange_Client.GraphQL.Query
     {
         public userApp UserApp { get; set; }
         public int takeChats { get; set; }
-        public int unseenForUserIdTake { get; set; }
-        public int newestWhenNoUnseenTake { get; set; }
+        public int newestInChatTake { get; set; }        
         public string url { get; set; }
         public string token { get; set; }
     }
@@ -39,36 +38,36 @@ namespace MGT_Exchange_Client.GraphQL.Query
         {
             QueryChatsByUserMain_Output output = new QueryChatsByUserMain_Output();
 
-
             string queryRaw = @"
 query {
-  chatsByUser(userAppId: " + SAHBResource.SetArgumentRaw(input.UserApp.userAppId) + @", take: " + input.takeChats + @") {
-    chatId
-    name
-    comments(
-      unseenForUserId: " + SAHBResource.SetArgumentRaw(input.UserApp.userAppId) + @"
-      unseenForUserIdTake: "+ input.unseenForUserIdTake + @"
-      newestWhenNoUnseenTake: " + input.newestWhenNoUnseenTake + @"
-    ) {
-      commentId
-      message
-      user {
-        userAppId
-        nickname
-      }
+        chatsByUser(userAppId: " + SAHBResource.SetArgumentRaw(input.UserApp.userAppId) + @", take: " + input.takeChats + @") {
+            createdAt
+            closed
+            updatedAt
+            closedAt
+            chatId
+            type
+            name
+            description
+            comments(newestInChatTake: " + input.newestInChatTake + @")
+            {
+            userAppId
+            commentId
+            message
+            createdAt
+            seenByAll
+                user
+                {
+                    firstName
+                    lastName
+                    userName
+                    nickname
+                    alias
+                }
+            }
+        }
     }
-    participants {
-      participantId
-      userAppId
-      user {
-        userAppId
-        nickname
-      }
-    }
-  }
-}
-
-";
+            ";
 
             string queryToExecute = " {\"query\":\" " + queryRaw + " \"} ";
 

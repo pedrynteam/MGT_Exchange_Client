@@ -6,16 +6,28 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MGT_Exchange_Client.GraphQL.Testing
+namespace MGT_Exchange_Client.GraphQL.Execute
 {
-    public static class MGTQueryTest
-    {        
-        public static async Task<QueryAllUsersByCompany_Output> TestQueryAllUsersByCompany()
+    public static class MGTQueryExecute
+    {
+        // <Query>
+        public static async Task<QueryChatsByUserMain_Output> ExecuteQueryChatsByUserMain(IMGTClient clientMGT, string _url, string _token)
         {
+            QueryChatsByUserMain_Input input = new QueryChatsByUserMain_Input
+            {
+                UserApp = new userApp { userAppId = "127b0df2-d732-478e-bf84-0b673c48d145" },
+                takeChats = 5,
+                newestInChatTake = 1,
+                url = _url,
+                token = _token
+            };
 
-            IMGTExchangeClient clientMGT = new MGTExchangeClient();
-            string _url = "http://10.18.24.67:8082/";
-            string _token = "token";
+            QueryChatsByUserMain_Output output = await clientMGT.QueryChatsByUserMain(input: input);
+            return output;
+        }
+
+        public static async Task<QueryAllUsersByCompany_Output> ExecuteQueryAllUsersByCompany(IMGTClient clientMGT, string _url, string _token)
+        {
 
             QueryAllUsersByCompany_Input input = new QueryAllUsersByCompany_Input
             {
@@ -27,13 +39,10 @@ namespace MGT_Exchange_Client.GraphQL.Testing
             QueryAllUsersByCompany_Output output = await clientMGT.QueryAllUsersByCompany(input: input);
             return output;
         }
-        
-        public static async Task<QueryRetrieveMasterInformationByUser_Output> TestQueryRetrieveRecentChats()
-        {
 
-            IMGTExchangeClient clientMGT = new MGTExchangeClient();
-            string _url = "http://10.18.24.67:8082/";
-            string _token = "token";
+        /*
+        public static async Task<QueryRetrieveMasterInformationByUser_Output> ExecuteQueryRetrieveRecentChats(IMGTClient clientMGT, string _url, string _token)
+        {
 
             // This is to be used as master List, to show recent chats, and recent message of each chat (seen or unseen). 
             // After that the user can click in an specific chat to check more information
@@ -50,17 +59,15 @@ namespace MGT_Exchange_Client.GraphQL.Testing
                 token = _token
             };
 
-            QueryRetrieveMasterInformationByUser_Output output = await clientMGT.QueryRetrieveRecentChats(input: input);
+            QueryRetrieveMasterInformationByUser_Output output = await clientMGT.QueryRetrieveRecentChatsByComments(input: input);
 
             return output;
         }
+        */
 
-        public static async Task<QueryRetrieveMasterInformationByUser_Output> TestQueryRetrieveChatComments()
+            
+        public static async Task<QueryRetrieveMasterInformationByUser_Output> ExecuteQueryRetrieveChatComments(IMGTClient clientMGT, string _url, string _token)
         {
-
-            IMGTExchangeClient clientMGT = new MGTExchangeClient();
-            string _url = "http://10.18.24.67:8082/";
-            string _token = "token";
 
             // This is to be used when a user clicks any Chat from the master chats list
             // The app must show unseen comments if any, if none, wold show newest comments
@@ -81,9 +88,10 @@ namespace MGT_Exchange_Client.GraphQL.Testing
                 token = _token
             };
 
-            QueryRetrieveMasterInformationByUser_Output output = await clientMGT.QueryRetrieveRecentChats(input: input);
+            QueryRetrieveMasterInformationByUser_Output output = await clientMGT.QueryRetrieveChatComments(input: input);
             return output;
 
         }
+        
     }
 }
